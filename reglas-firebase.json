@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "presencia": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChild('estado') && newData.child('estado').isString()"
+      }
+    },
+    "chat": {
+      ".read": true,
+      "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['n','t','ts']) && newData.child('n').isString() && newData.child('n').val().length <= 20 && newData.child('t').isString() && newData.child('t').val().length <= 200 && newData.child('ts').val() == now"
+      }
+    }
+  }
+}
