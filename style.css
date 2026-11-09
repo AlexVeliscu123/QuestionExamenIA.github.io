@@ -147,6 +147,7 @@ body {
   margin: 0 auto;
   padding: 76px 16px 48px; /* deja sitio arriba para el botón de tema y el contador */
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
 }
@@ -219,12 +220,24 @@ h4 { margin: 20px 0 10px; font-size: 1rem; color: var(--muted); text-transform: 
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 26px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 26px auto 0;
+  padding: 12px 20px;
+  font-weight: 600;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 99px;
+  box-shadow: var(--shadow);
   cursor: pointer;
   user-select: none;
+  position: relative;
+  transition: border-color 0.15s;
 }
+.switch:hover { border-color: var(--primary); }
 .switch input { position: absolute; opacity: 0; }
 .track {
+  flex: none;
   width: 46px; height: 26px;
   border-radius: 99px;
   background: var(--border);
@@ -581,4 +594,44 @@ button:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
   border: 1px solid var(--primary);
   border-radius: 99px;
   cursor: pointer;
+}
+
+/* ---------- Mejoras para móvil ---------- */
+body { -webkit-tap-highlight-color: transparent; }
+@media (max-width: 600px) {
+  /* Espacio abajo para que los botones flotantes (🔍 y 💬) no tapen nada */
+  .app { padding: 72px 16px 120px; }
+
+  /* Contador y botón de tema: se quedan arriba y se van al hacer scroll (no tapan las tarjetas) */
+  .online, .theme-toggle { position: absolute; }
+
+  /* Interruptor ocupa todo el ancho, con el texto bien ajustado */
+  .switch {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    text-align: left;
+    justify-content: flex-start;
+    line-height: 1.3;
+  }
+
+  /* Botones flotantes más pequeños y por encima de la barra inferior del móvil */
+  .chat-fab {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+  .chat-fab { right: 14px; }
+  .chat-fab.ayuda-left { right: auto; left: 14px; }
+  .chat-panel {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 12px;
+    width: calc(100vw - 24px);
+    height: min(460px, calc(100dvh - 150px));
+  }
+  .chat-panel.ayuda-left { right: auto; left: 12px; }
+
+  /* 16px en los campos de texto para que el móvil no haga zoom al escribir */
+  .chat-head input, .chat-form input { font-size: 16px; }
 }
