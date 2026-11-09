@@ -18,6 +18,7 @@ Web con dos pruebas independientes que funciona en PC, móvil y tablet sin insta
 - Diseño moderno, adaptado a móvil, con modo claro y oscuro automático según tu sistema
 - Botón ☀️/🌙 (arriba a la derecha) para cambiar de tema a mano; se recuerda tu elección
 - Icono propio en la pestaña del navegador (`favicon.svg`)
+- Contador de personas en línea y en qué test están (`presencia.js`, con Firebase Realtime Database). Solo guarda el estado de cada pestaña, sin datos personales, y se borra al cerrarla
 
 ## Publicar en GitHub Pages
 

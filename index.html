@@ -6,8 +6,8 @@
   <meta name="description" content="Test de Inteligencia Artificial: elige entre el test teórico o la práctica de tipos de aprendizaje.">
   <meta name="theme-color" content="#6366f1">
   <title>Test de Inteligencia Artificial</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=5">
+  <link rel="stylesheet" href="style.css?v=5">
   <script>
     // Aplica el tema guardado antes de pintar la página (evita parpadeos)
     try {
@@ -58,6 +58,12 @@
         <span class="track"><span class="thumb"></span></span>
         <span>Mezclar el orden de las preguntas</span>
       </label>
+
+      <!-- Personas en línea (se rellena desde presencia.js) -->
+      <div id="online" class="online hidden" aria-live="polite">
+        <span class="online-main"><span class="online-dot"></span><span id="online-total"></span></span>
+        <p class="online-detail muted" id="online-detail"></p>
+      </div>
     </section>
 
     <!-- Pantalla de pregunta -->
@@ -102,6 +108,7 @@
 
   <script src="questions.js?v=3"></script>
   <script src="practica.js?v=3"></script>
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
+  <script type="module" src="presencia.js?v=5"></script>
 </body>
 </html>

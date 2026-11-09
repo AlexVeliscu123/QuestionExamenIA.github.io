@@ -51,6 +51,29 @@
   --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* Personas en línea */
+.online { margin: 20px auto 0; text-align: center; }
+.online-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.online-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.online-detail { margin: 6px 0 0; font-size: 0.82rem; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
 /* Botón de cambio de tema */
 .theme-toggle {
   position: fixed;

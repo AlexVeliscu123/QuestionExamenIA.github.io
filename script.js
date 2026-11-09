@@ -25,6 +25,10 @@
   function show(name) {
     Object.entries(screens).forEach(([k, el]) => el.classList.toggle("hidden", k !== name));
     window.scrollTo({ top: 0 });
+    // Avisa al contador de personas en línea de dónde está esta persona
+    const estado = name === "quiz" ? mode : "menu";
+    window.__estado = estado;
+    window.dispatchEvent(new CustomEvent("estado-test", { detail: estado }));
   }
 
   function shuffleArray(arr) {
