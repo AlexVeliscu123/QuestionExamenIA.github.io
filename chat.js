@@ -1,7 +1,7 @@
 // Mini chat en vivo (Firebase Realtime Database), abajo a la derecha.
 // Guarda en "chat" los últimos mensajes: nombre, texto y hora. Sin cuentas ni datos personales.
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, query, limitToLast, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+import { getDatabase, ref, push, remove, get, onValue, onChildAdded, onChildRemoved, query, limitToLast, orderByChild, endAt, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAF1vUEsuYQzJ7GKepZMw12mAuzkFq2yhA",
@@ -25,6 +25,11 @@ const badge = $("chat-badge");
 const NAME_KEY = "test-ia-chat-nombre";
 const MAX_MSG = 200;
 const MAX_NAME = 20;
+const VIDA_MS = 12 * 60 * 60 * 1000; // los mensajes duran 12 horas
+const REVISAR_CADA_MS = 30 * 60 * 1000; // limpieza cada 30 min mientras la web está abierta
+let desfase = 0; // diferencia entre el reloj del servidor y el de este dispositivo
+const ahoraServidor = () => Date.now() + desfase;
+const elementos = {}; // clave del mensaje -> elemento en pantalla
 let abierto = false;
 let sinLeer = 0;
 let ultimoEnvio = 0;
@@ -78,7 +83,7 @@ function hora(ts) {
   return d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
 }
 
-function pintarMensaje(m) {
+function pintarMensaje(key, m) {
   const cerca = list.scrollHeight - list.scrollTop - list.clientHeight < 80;
   const div = document.createElement("div");
   div.className = "chat-msg" + (m.n === nombre ? " mine" : "");
@@ -89,6 +94,7 @@ function pintarMensaje(m) {
   body.className = "chat-text";
   body.textContent = m.t; // textContent: nunca se interpreta como HTML
   div.append(head, body);
+  elementos[key] = div;
   list.appendChild(div);
   while (list.children.length > 80) list.removeChild(list.firstChild);
   if (cerca || m.n === nombre) list.scrollTop = list.scrollHeight;
@@ -102,12 +108,33 @@ try {
   onChildAdded(query(chatRef, limitToLast(50)), (snap) => {
     const m = snap.val();
     if (!m || typeof m.t !== "string" || typeof m.n !== "string") return;
-    pintarMensaje(m);
+    if (typeof m.ts === "number" && m.ts < ahoraServidor() - VIDA_MS) return; // ya caducado
+    pintarMensaje(snap.key, m);
     if (!abierto && !cargaInicial) {
       sinLeer++;
       setBadge();
     }
   });
+  // Si se borra un mensaje (limpieza), desaparece también de la pantalla
+  onChildRemoved(chatRef, (snap) => {
+    const el = elementos[snap.key];
+    if (el) { el.remove(); delete elementos[snap.key]; }
+  });
+
+  // Limpieza automática: borra los mensajes de más de 12 horas
+  async function limpiar() {
+    try {
+      const limite = ahoraServidor() - VIDA_MS;
+      const viejos = await get(query(chatRef, orderByChild("ts"), endAt(limite)));
+      viejos.forEach((hijo) => { remove(hijo.ref).catch(() => {}); });
+    } catch (e) { /* sin permisos o sin conexión: se ignora */ }
+  }
+  onValue(ref(db, ".info/serverTimeOffset"), (s) => {
+    desfase = s.val() || 0;
+    limpiar();
+  });
+  setInterval(limpiar, REVISAR_CADA_MS);
+
   // Pasado un momento, lo que llegue ya cuenta como "nuevo"
   setTimeout(() => { cargaInicial = false; }, 2500);
 
