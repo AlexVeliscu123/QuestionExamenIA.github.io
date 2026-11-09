@@ -567,3 +567,18 @@ button:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
 
 /* El chat solo se ve en el menú de inicio */
 .chat-fab.away, .chat-panel.away, .online.away { display: none !important; }
+
+/* Mini asistente (abajo a la izquierda) */
+.chat-fab.ayuda-left { right: auto; left: 16px; }
+.chat-panel.ayuda-left { right: auto; left: 16px; }
+.ay-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ay-chip {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary);
+  border-radius: 99px;
+  cursor: pointer;
+}
