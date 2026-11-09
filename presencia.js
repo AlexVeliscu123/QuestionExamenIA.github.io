@@ -58,11 +58,13 @@ try {
     ref(db, "presencia"),
     (snap) => {
       const counts = { menu: 0, teoria: 0, clasif: 0 };
+      let total = 0;
       snap.forEach((hijo) => {
+        total++;
         const e = hijo.val() && hijo.val().estado;
         if (e in counts) counts[e]++;
       });
-      pintar(counts, snap.numChildren());
+      pintar(counts, total);
     },
     () => box.classList.add("hidden")
   );
