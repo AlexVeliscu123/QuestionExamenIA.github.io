@@ -51,14 +51,13 @@
   --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Personas en línea (centrado, dentro del menú de inicio) */
+/* Personas en línea (arriba a la derecha, al lado del botón de tema) */
 .online {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-top: 22px;
-  text-align: center;
+  position: fixed;
+  top: 14px;
+  right: 68px;
+  z-index: 10;
+  cursor: pointer;
 }
 .online-main {
   display: inline-flex;
@@ -81,8 +80,24 @@
   background: var(--ok);
   animation: pulse 1.6s ease-in-out infinite;
 }
-.online-detail { margin: 0; font-size: 0.85rem; color: var(--muted); }
-.online-detail:empty { display: none; }
+.online-detail {
+  display: none;
+  position: absolute;
+  top: 52px;
+  right: 0;
+  margin: 0;
+  padding: 8px 12px;
+  width: max-content;
+  max-width: 78vw;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.online:hover .online-detail:not(:empty),
+.online.open .online-detail:not(:empty) { display: block; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* Botón de cambio de tema */
@@ -551,4 +566,4 @@ button:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
 }
 
 /* El chat solo se ve en el menú de inicio */
-.chat-fab.away, .chat-panel.away { display: none !important; }
+.chat-fab.away, .chat-panel.away, .online.away { display: none !important; }

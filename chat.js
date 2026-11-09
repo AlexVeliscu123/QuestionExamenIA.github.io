@@ -66,6 +66,8 @@ function ajustarPantalla(estado) {
   const fuera = estado !== "menu";
   fab.classList.toggle("away", fuera);
   panel.classList.toggle("away", fuera);
+  const online = $("online");
+  if (online) online.classList.toggle("away", fuera);
 }
 window.addEventListener("estado-test", (e) => ajustarPantalla(e.detail));
 ajustarPantalla(window.__estado || "menu");
