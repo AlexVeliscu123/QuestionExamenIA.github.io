@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Test de Inteligencia Artificial: elige entre el test teórico o la práctica de tipos de aprendizaje.">
+  <meta name="theme-color" content="#6366f1">
+  <title>Test de Inteligencia Artificial</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
+  <link rel="stylesheet" href="style.css?v=4">
+  <script>
+    // Aplica el tema guardado antes de pintar la página (evita parpadeos)
+    try {
+      var t = localStorage.getItem("test-ia-tema");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"></button>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <main class="app">
+
+    <!-- Menú de inicio: elegir qué test hacer -->
+    <section id="start" class="screen">
+      <header class="hero">
+        <span class="hero-icon">🤖</span>
+        <h1>Test de Inteligencia Artificial</h1>
+        <p class="muted">Elige qué quieres practicar. Cada prueba es independiente y se corrige al momento.</p>
+      </header>
+
+      <div class="modes">
+        <button type="button" class="mode-card" data-mode="teoria">
+          <span class="mode-emoji">📘</span>
+          <span class="mode-title">Test teórico</span>
+          <span class="mode-desc">AutoML, aprendizaje supervisado y por refuerzo, CNN, Transformers, RNN, metaaprendizaje…</span>
+          <span class="mode-meta">
+            <span class="pill" id="count-teoria">32 preguntas</span>
+            <span class="pill best" id="best-teoria"></span>
+          </span>
+          <span class="mode-go">Empezar →</span>
+        </button>
+
+        <button type="button" class="mode-card" data-mode="clasif">
+          <span class="mode-emoji">🧪</span>
+          <span class="mode-title">Práctica: tipo de aprendizaje</span>
+          <span class="mode-desc">Situaciones en las que decides si es aprendizaje supervisado, no supervisado, semisupervisado, por refuerzo o en conjunto.</span>
+          <span class="mode-meta">
+            <span class="pill" id="count-clasif">20 casos</span>
+            <span class="pill best" id="best-clasif"></span>
+          </span>
+          <span class="mode-go">Empezar →</span>
+        </button>
+      </div>
+
+      <label class="switch">
+        <input type="checkbox" id="shuffle" checked>
+        <span class="track"><span class="thumb"></span></span>
+        <span>Mezclar el orden de las preguntas</span>
+      </label>
+    </section>
+
+    <!-- Pantalla de pregunta -->
+    <section id="quiz" class="screen hidden">
+      <div class="top">
+        <button type="button" id="btn-exit" class="link-btn">← Salir</button>
+        <span id="mode-name" class="mode-name"></span>
+        <span id="score-live" class="score-live">Aciertos: 0</span>
+      </div>
+      <div class="bar"><div id="bar-fill"></div></div>
+      <div class="meta-row">
+        <span id="counter" class="counter">Pregunta 1 / 32</span>
+        <span id="badge" class="badge"></span>
+      </div>
+      <div class="card">
+        <h2 id="question"></h2>
+        <div id="options" class="options"></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+        <div id="just" class="just hidden"></div>
+        <button id="btn-next" class="btn primary hidden">Siguiente</button>
+      </div>
+      <p class="hint muted" id="hint"></p>
+    </section>
+
+    <!-- Pantalla de resultados -->
+    <section id="result" class="screen hidden">
+      <div class="card result-card">
+        <p class="muted" id="result-mode"></p>
+        <div class="ring" id="ring"><div class="ring-inner"><strong id="ring-pct">0%</strong><span id="ring-num" class="muted">0 / 0</span></div></div>
+        <p id="final-msg" class="final-msg"></p>
+        <p id="best-msg" class="muted"></p>
+        <div class="actions">
+          <button id="btn-retry-wrong" class="btn primary">Repetir solo los fallos</button>
+          <button id="btn-restart" class="btn">Repetir este test</button>
+          <button id="btn-menu" class="btn ghost">Elegir otro test</button>
+        </div>
+      </div>
+      <div id="review"></div>
+    </section>
+
+  </main>
+
+  <script src="questions.js?v=3"></script>
+  <script src="practica.js?v=3"></script>
+  <script src="script.js?v=4"></script>
+</body>
+</html>
