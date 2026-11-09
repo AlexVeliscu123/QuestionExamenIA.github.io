@@ -6,8 +6,8 @@
   <meta name="description" content="Test de Inteligencia Artificial: elige entre el test teórico o la práctica de tipos de aprendizaje.">
   <meta name="theme-color" content="#6366f1">
   <title>Test de Inteligencia Artificial</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=6">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=7">
+  <link rel="stylesheet" href="style.css?v=7">
   <script>
     // Aplica el tema guardado antes de pintar la página (evita parpadeos)
     try {
@@ -18,11 +18,13 @@
 </head>
 <body>
   <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"></button>
+
   <!-- Personas en línea: al lado del botón de tema (se rellena desde presencia.js) -->
   <div id="online" class="online hidden" role="status" aria-live="polite" title="Personas conectadas ahora mismo">
     <span class="online-main"><span class="online-dot"></span><span id="online-total"></span></span>
     <p class="online-detail" id="online-detail"></p>
   </div>
+
   <div class="bg-glow" aria-hidden="true"></div>
   <main class="app">
 
@@ -62,7 +64,8 @@
         <input type="checkbox" id="shuffle" checked>
         <span class="track"><span class="thumb"></span></span>
         <span>Mezclar el orden de las preguntas</span>
-      </label>    </section>
+      </label>
+    </section>
 
     <!-- Pantalla de pregunta -->
     <section id="quiz" class="screen hidden">
@@ -104,9 +107,9 @@
 
   </main>
 
-  <script src="questions.js?v=3"></script>
-  <script src="practica.js?v=3"></script>
-  <script src="script.js?v=6"></script>
-  <script type="module" src="presencia.js?v=6"></script>
+  <script src="questions.js?v=7"></script>
+  <script src="practica.js?v=7"></script>
+  <script src="script.js?v=7"></script>
+  <script type="module" src="presencia.js?v=7"></script>
 </body>
 </html>
