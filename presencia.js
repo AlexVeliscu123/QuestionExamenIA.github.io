@@ -29,6 +29,9 @@ function pintar(counts, total) {
   box.classList.remove("hidden");
 }
 
+// En móvil (sin ratón) el desglose se abre y se cierra pulsando sobre el contador
+box.addEventListener("click", () => box.classList.toggle("open"));
+
 try {
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
