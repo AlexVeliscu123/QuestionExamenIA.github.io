@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#6366f1">
   <title>Test de Inteligencia Artificial</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=7">
-  <link rel="stylesheet" href="style.css?v=12">
+  <link rel="stylesheet" href="style.css?v=13">
   <script>
     // Aplica el tema guardado antes de pintar la página (evita parpadeos)
     try {
@@ -18,6 +18,12 @@
 </head>
 <body>
   <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema"></button>
+
+  <!-- Probabilidad de aprobar: arriba a la izquierda (se calcula en script.js) -->
+  <div id="prob" class="prob" role="status" aria-live="polite">
+    <span class="prob-label">🎯 Aprobar</span>
+    <strong id="prob-val" class="prob-val">Haz un test</strong>
+  </div>
 
   <!-- Personas en línea: arriba a la derecha, al lado del botón de tema (se rellena desde presencia.js) -->
   <div id="online" class="online hidden" role="status" aria-live="polite" title="Personas conectadas ahora mismo">
@@ -140,7 +146,7 @@
 
   <script src="questions.js?v=7"></script>
   <script src="practica.js?v=7"></script>
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
   <script src="asistente.js?v=1"></script>
   <script type="module" src="presencia.js?v=8"></script>
   <script type="module" src="chat.js?v=4"></script>

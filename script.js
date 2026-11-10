@@ -27,6 +27,7 @@
     window.scrollTo({ top: 0 });
     // Avisa al contador de personas en línea de dónde está esta persona
     const estado = name === "quiz" ? mode : "menu";
+    $("prob").classList.toggle("away", estado !== "menu");
     window.__estado = estado;
     window.dispatchEvent(new CustomEvent("estado-test", { detail: estado }));
   }
@@ -61,7 +62,52 @@
     return false;
   }
 
+  // ---------- Probabilidad de aprobar ----------
+  // Se guardan los últimos intentos completos de cada test (no los repasos de fallos).
+  // Estimación: media ponderada (los intentos recientes pesan más) y curva logística
+  // centrada en el 50 % (nota mínima de aprobado). Es solo orientativa.
+  const HIST_KEY = "test-ia-hist-";
+  const HIST_MAX = 5;
+  const NOTA_APROBADO = 0.5;
+  function getHist(t) {
+    try {
+      const h = JSON.parse(localStorage.getItem(HIST_KEY + t));
+      return Array.isArray(h) ? h.filter((x) => typeof x === "number") : [];
+    } catch (e) { return []; }
+  }
+  function saveHist(t, frac) {
+    try {
+      const h = getHist(t);
+      h.push(frac);
+      localStorage.setItem(HIST_KEY + t, JSON.stringify(h.slice(-HIST_MAX)));
+    } catch (e) { /* sin almacenamiento */ }
+  }
+  function scoreOf(t) {
+    const h = getHist(t);
+    if (!h.length) return null;
+    let sum = 0, w = 0;
+    h.forEach((v, i) => { const p = i + 1; sum += v * p; w += p; });
+    return sum / w;
+  }
+  function probabilidad() {
+    const scores = Object.keys(MODES).map(scoreOf).filter((s) => s !== null);
+    if (!scores.length) return null;
+    const media = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const p = 1 / (1 + Math.exp(-10 * (media - NOTA_APROBADO)));
+    return Math.round(p * 100);
+  }
+  function paintProb() {
+    const p = probabilidad();
+    const box = $("prob");
+    $("prob-val").textContent = p === null ? "Haz un test" : `${p}%`;
+    box.style.setProperty("--prob-color", p === null ? "var(--muted)" : p >= 70 ? "var(--ok)" : p >= 40 ? "var(--primary)" : "var(--bad)");
+    box.title = p === null
+      ? "Haz algún test para calcular tu probabilidad de aprobar"
+      : "Probabilidad estimada de aprobar, según tus últimos intentos en los tests";
+  }
+
   function refreshMenu() {
+    paintProb();
     Object.keys(MODES).forEach((t) => {
       const n = indicesOf(t).length;
       $("count-" + t).textContent = t === "clasif" ? `${n} casos` : `${n} preguntas`;
@@ -183,6 +229,7 @@
     const bestMsg = $("best-msg");
     bestMsg.textContent = "";
     if (!retrying) {
+      saveHist(mode, ok / total);
       const isNew = saveBest(mode, ok, total);
       if (isNew && pct > 0) bestMsg.textContent = "⭐ ¡Nuevo récord personal!";
       refreshMenu();

@@ -579,7 +579,29 @@ button:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
 }
 
 /* El chat solo se ve en el menú de inicio */
-.chat-fab.away, .chat-panel.away, .online.away { display: none !important; }
+.chat-fab.away, .chat-panel.away, .online.away, .prob.away { display: none !important; }
+
+/* Probabilidad de aprobar (arriba a la izquierda) */
+.prob {
+  --prob-color: var(--muted);
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  background: var(--card);
+  color: var(--text);
+  border: 2px solid var(--prob-color);
+  box-shadow: var(--shadow);
+}
+.prob-label { font-weight: 600; color: var(--muted); }
+.prob-val { font-weight: 800; color: var(--prob-color); white-space: nowrap; }
 
 /* Mini asistente (abajo a la izquierda) */
 .chat-fab.ayuda-left { right: auto; left: 16px; }
@@ -603,7 +625,8 @@ body { -webkit-tap-highlight-color: transparent; }
   .app { padding: 72px 16px 120px; }
 
   /* Contador y botón de tema: se quedan arriba y se van al hacer scroll (no tapan las tarjetas) */
-  .online, .theme-toggle { position: absolute; }
+  .online, .theme-toggle, .prob { position: absolute; }
+  .prob { left: 12px; padding: 0 12px; gap: 6px; font-size: 0.82rem; }
 
   /* Interruptor ocupa todo el ancho, con el texto bien ajustado */
   .switch {
